@@ -1,0 +1,31 @@
+{
+  "name": "cors",
+  "version": "1.0.0",
+  "description": "Study notes and example code about CORS",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc .",
+    "dev": "ts-node index.ts",
+    "main": "node ./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r04922101/cors.git"
+  },
+  "keywords": [
+    "cors"
+  ],
+  "author": "Tony Huang",
+  "bugs": {
+    "url": "https://github.com/r04922101/cors/issues"
+  },
+  "homepage": "https://github.com/r04922101/cors#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "ts-node": "^10.0.0"
+  }
+}

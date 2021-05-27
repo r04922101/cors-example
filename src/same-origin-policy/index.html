@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Same-Origin Policy</title>
+</head>
+<script>
+  function explain(text) {
+    document.getElementById("blank").style.visibility = "visible";
+    document.getElementById("explanation").innerHTML = text;
+  }
+
+  function handleError(error) {
+    document.getElementById("error").innerHTML = Error(error).message;
+  }
+
+  function myFetch(url, options, explanation) {
+    document.getElementById("blank").style.visibility = "hidden";
+    document.getElementById("explanation").innerHTML = "";
+    document.getElementById("error").innerHTML = "";
+    explain(explanation);
+    fetch(url, options).catch(handleError);
+  }
+
+  function simpleGet() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {},
+      "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
+    )
+  }
+
+  function noCorsGet() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {
+        mode: "no-cors"
+      },
+      "Simple GET. no-cors mode mitigates the error."
+    )
+  }
+
+  function simplePost() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {
+        method: "POST"
+      },
+      "Simple POST. Browser blocked the repsonse and throw error by same-origin policy."
+    );
+  }
+
+  function jsonPost() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      },
+      'NOT a simple POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
+    );
+  }
+
+  function noCorsFormPost() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      },
+      'Simple POST with "Content-Type": "application/x-www-form-urlencoded". no-cors mode mitigates the error.'
+    );
+  }
+
+  function noCorsJsonPost() {
+    myFetch("http://localhost:3001/same-origin-policy", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    },
+      'NOT a simple POST. no-cors stripped the header "Content-Type": "application/json".'
+    );
+  }
+
+  function noCorsJsonStrippedPost() {
+    myFetch("http://localhost:3001/same-origin-policy",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+          "Custom-Header": "I will be stripped"
+        }
+      },
+      'NOT a simple POST. no-cors stripped the header "Content-Type": "application/json" and custom header.'
+    );
+  }
+</script>
+
+<body>
+  <h1>Same-Origin Policy</h1>
+  <h2>Simple Request</h2>
+  <button onclick="simpleGet()">Click to do simple GET</button>
+  <br>
+  <button onclick="simplePost()">Click to do simple POST</button>
+  <br>
+  <h2>JSON POST</h2>
+  <button onclick="jsonPost()">Click to do POST with Content-Type: application/json</button>
+  <br>
+
+  <h2>NO-CORS</h2>
+  <button onclick="noCorsGet()">Click to do simple GET with no-cors mode</button>
+  <br>
+  <button onclick="noCorsFormPost()">Click to do simple POST with Content-Type: application/x-www-form-urlencoded and
+    no-cors</button>
+  <br>
+  <button onclick="noCorsJsonPost()">Click to do simple POST with Content-Type: application/json and no-cors</button>
+  <br>
+  <button onclick="noCorsJsonStrippedPost()">Click to do simple POST with Content-Type: application/json, custom header,
+    and no-cors</button>
+  <br>
+  <span style="color: blue;" id="explanation"></span>
+  <br style="visibility: hidden" ; id="blank">
+  <span style="color: red;font-weight: bold" id="error"></span>
+</body>
+
+</html>
