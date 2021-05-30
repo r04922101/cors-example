@@ -9,7 +9,7 @@ export function web(): Router {
   return router;
 }
 
-export function server() {
+export function router() {
   const router = Router();
   router.get('/', function(req, res) {
     console.log(`Got a HTTP GET request with header: ${JSON.stringify(req.headers)}`)

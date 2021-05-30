@@ -17,7 +17,7 @@ function startWebServer() {
 function startResourceServer() {
   const server = express();
 
-  server.use('/same-origin-policy', sameOriginPolicy.server());
+  server.use('/same-origin-policy', sameOriginPolicy.router());
 
   server.listen(serverPort);
 
