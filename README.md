@@ -1,4 +1,4 @@
-# CORS
+# CORS Example
 
 This repository contains my study notes and example code about CORS. \
 I wrote some example code to crack CORS issues I have encountered step by step. \

@@ -1,5 +1,5 @@
 {
-  "name": "cors",
+  "name": "cors-example",
   "version": "1.0.0",
   "description": "Study notes and example code about CORS",
   "main": "index.js",
@@ -11,16 +11,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/r04922101/cors.git"
+    "url": "git+https://github.com/r04922101/cors-example.git"
   },
   "keywords": [
     "cors"
   ],
   "author": "Tony Huang",
   "bugs": {
-    "url": "https://github.com/r04922101/cors/issues"
+    "url": "https://github.com/r04922101/cors-example/issues"
   },
-  "homepage": "https://github.com/r04922101/cors#readme",
+  "homepage": "https://github.com/r04922101/cors-example#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
