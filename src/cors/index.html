@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Same-Origin Policy</title>
+</head>
+<script>
+  function explain(text) {
+    document.getElementById("explanation").innerHTML = text;
+  }
+
+  function handleError(error) {
+    document.getElementById("blank-error").style.visibility = "visible";
+    document.getElementById("error").innerHTML = Error(error).message;
+  }
+
+  function myFetch(url, options, explanation) {
+    document.getElementById("explanation").innerHTML = "";
+    document.getElementById("blank-error").style.visibility = "hidden";
+    document.getElementById("error").innerHTML = "";
+    document.getElementById("blank-response").style.visibility = "hidden";
+    explain(explanation);
+
+    fetch(url, options)
+      .then(resp => resp.text())
+      .then(text => {
+        document.getElementById("blank-response").style.visibility = "visible";
+        document.getElementById("response").innerHTML = `Response : ${text}`;
+      })
+      .catch(handleError);
+  }
+
+  function simpleGet() {
+    myFetch("http://localhost:3001/cors/simple",
+      {},
+      "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
+    )
+  }
+
+  function wildcardSimpleGet() {
+    myFetch("http://localhost:3001/cors/wildcard",
+      {}
+      ,
+      "Simple GET. Check the response header, Access-Control-Allow-Origin: *"
+    )
+  }
+</script>
+
+<body>
+  <h1>CORS</h1>
+  <h2>Simple Request</h2>
+  <button onclick="simpleGet()">Click to do simple GET</button>
+  <br>
+  <button onclick="wildcardSimpleGet()">Click to do simple GET with server wildcard cors GET</button>
+  <br>
+  <span style="color: blue" id="explanation"></span>
+  <br style="visibility: hidden" id="blank-error">
+  <span style="color: red;font-weight: bold" id="error"></span>
+  <br style="visibility: hidden" id="blank-response">
+  <span id="response"></span>
+</body>
+
+</html>

@@ -12,12 +12,10 @@ export function web(): Router {
 export function router() {
   const router = Router();
   router.get('/', function(req, res) {
-    console.log(`Got a HTTP GET request with header: ${JSON.stringify(req.headers)}`)
     res.send('Response');
   })
 
   router.post('/', function(req, res) {
-    console.log(`Got a HTTP POST request with header: ${JSON.stringify(req.headers)}`)
     res.json({ msg: "msg", status: "200" });
   })
   return router;
