@@ -16,18 +16,24 @@
     document.getElementById("error").innerHTML += Error(error).message;
   }
 
-  function myFetch(path, options, explanation) {
+  function myFetch(path, options, explanation, showHeader = '') {
     document.getElementById("explanation").innerHTML = "Explanation: ";
     document.getElementById("error").innerHTML = "Error: ";
     document.getElementById("response").innerHTML = "Response: ";
     explain(explanation);
 
-    fetch("http://localhost:3001/cors/" + path, options)
-      .then(resp => resp.text())
+    return fetch("http://localhost:3001/cors/" + path, options)
+      .then(resp => {
+        if(showHeader) {
+          alert(resp.headers.get(showHeader));
+        }
+        return resp.text();
+      })
       .then(text => {
-        if(text) {
+        if (text) {
           document.getElementById("response").innerHTML = `Response : ${text}`;
         }
+        return text;
       })
       .catch(handleError);
   }
@@ -164,6 +170,34 @@
       'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".'
     );
   }
+
+  function notExposeHeaders() {
+    myFetch("expose-headers",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Expose": false
+        }
+      },
+      'JSON POST, but the server did NOT expose response header.',
+      'response-header'
+    );
+  }
+
+  function exposeHeaders() {
+    myFetch("expose-headers",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Expose": true
+        }
+      },
+      'JSON POST, and the server DID expose response header.',
+      'response-header'
+    );
+  }
 </script>
 
 <body>
@@ -180,25 +214,37 @@
   <h2>JSON POST</h2>
   <button onclick="jsonPost()">Click to do POST with Content-Type: application/json</button>
   <br>
-  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json to the server with wildcard cors POST</button>
+  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json to the server with wildcard
+    cors POST</button>
   <br>
   <h3>Preflight Fails</h3>
   Check the server console to see that the actual request will not be sent to the server.
   <br>
-  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to origin</button>
+  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json to the server,
+    which declined the preflight check due to origin</button>
   <br>
-  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to method</button>
+  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json to the server,
+    which declined the preflight check due to method</button>
   <br>
-  <button onclick="preflightFailedCustomHeaderPost()">Click to do POST with Custom-Header: custom-header to the server, which declined the preflight check due to custom header</button>
+  <button onclick="preflightFailedCustomHeaderPost()">Click to do POST with Custom-Header: custom-header to the server,
+    which declined the preflight check due to custom header</button>
   <br>
   <span style="color: blue" id="explanation"></span>
   <br>
   <h2>Credentials</h2>
-  <button onclick="simpleCredentialsIncluded()">Click to do simple request with credentails, which declines credentials</button>
+  <button onclick="simpleCredentialsIncluded()">Click to do simple request with credentails, which declines
+    credentials</button>
   <br>
-  <button onclick="simpleCredentialsWildcard()">Click to do simple request with credentails to the server with wildcard cors GET</button>
+  <button onclick="simpleCredentialsWildcard()">Click to do simple request with credentails to the server with wildcard
+    cors GET</button>
   <br>
-  <button onclick="simpleCredentials()">Click to do simple request with credentails to the server, which accepts credentials</button>
+  <button onclick="simpleCredentials()">Click to do simple request with credentails to the server, which accepts
+    credentials</button>
+  <br>
+  <h2>Expose Headers</h2>
+  <button onclick="notExposeHeaders()">Click to JSON POST to the server, which did NOT expose headers</button>
+  <br>
+  <button onclick="exposeHeaders()">Click to JSON POST to the server, which DID expose headers</button>
   <br>
   <span style="color: red;font-weight: bold" id="error"></span>
   <br>

@@ -35,6 +35,7 @@ function startResourceServer() {
   server.use(corsPath, cors.simpleRouter());
   server.use(corsPath, cors.wildcardSimpleRouter());
   server.use(corsPath, cors.credentials());
+  server.use(corsPath, cors.notExposeHeaders());
 
   server.listen(serverPort);
 

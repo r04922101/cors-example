@@ -98,3 +98,23 @@ export function credentials(): Router {
   });
   return router;
 }
+
+export function notExposeHeaders(): Router {
+  const router = Router();
+  const endpoint = '/expose-headers';
+  router.options(endpoint, function(req, res) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Expose');
+    res.header('Access-Control-Allow-Method', 'POST');
+    return res.sendStatus(204);
+  });
+  router.post(endpoint, function(req, res) {
+    res.setHeader('response-header', 'response-header');
+    const isExposed = req.headers['expose'] === 'true';
+    if (isExposed) {
+      res.setHeader('Access-Control-Expose-Headers', 'response-header');
+    }
+    res.send(`You CAN${isExposed ? '' : 'NOT'} get response header because I DID${isExposed ? ' ' : ' NOT '}expose.`);
+  });
+  return router;
+}
