@@ -65,3 +65,18 @@ export function preflightFailedMethodRouter(): Router {
   });
   return router;
 }
+
+export function credentials(): Router {
+  const router = Router();
+  const endpoint = '/credentials';
+  router.use(
+    cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+    }),
+  );
+  router.get(endpoint, function(req, res) {
+    res.send('GET response with credentials.');
+  });
+  return router;
+}

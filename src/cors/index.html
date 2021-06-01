@@ -112,6 +112,45 @@
       'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"'
     );
   }
+
+  function simpleCredentialsIncluded() {
+    myFetch("simple",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Cookie": "myCookieKey=myCookieValue"
+        }
+      },
+      'Simple GET with credentials: "include". The browser will REJECT any response and the response would be ignored and NOT made available to web content.'
+    );
+  }
+
+  function simpleCredentialsWildcard() {
+    myFetch("wildcard",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Cookie": "myCookieKey=myCookieValue"
+        }
+      },
+      'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".'
+    );
+  }
+
+  function simpleCredentials() {
+    myFetch("credentials",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Cookie": "myCookieKey=myCookieValue"
+        }
+      },
+      'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".'
+    );
+  }
 </script>
 
 <body>
@@ -119,25 +158,32 @@
   <h2>Simple Request</h2>
   <button onclick="simpleGet()">Click to do simple GET</button>
   <br>
-  <button onclick="wildcardSimpleGet()">Click to do simple GET with server wildcard cors GET</button>
+  <button onclick="wildcardSimpleGet()">Click to do simple GET to the server with wildcard cors GET</button>
   <br>
   <button onclick="simplePost()">Click to do simple POST</button>
   <br>
-  <button onclick="wildcardSimplePost()">Click to do simple POST with server wildcard cors POST</button>
+  <button onclick="wildcardSimplePost()">Click to do simple POST to the server with wildcard cors POST</button>
   <br>
   <h2>JSON POST</h2>
   <button onclick="jsonPost()">Click to do POST with Content-Type: application/json</button>
   <br>
-  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json with server wildcard cors POST</button>
+  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json to the server with wildcard cors POST</button>
   <br>
   <h3>Preflight Fails</h3>
   Check the server console to see that the actual request will not be sent to the server.
   <br>
-  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json with server declined the preflight check due to origin</button>
+  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to origin</button>
   <br>
-  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json with server declined the preflight check due to method</button>
+  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to method</button>
   <br>
   <span style="color: blue" id="explanation"></span>
+  <br>
+  <h2>Credentials</h2>
+  <button onclick="simpleCredentialsIncluded()">Click to do simple request with credentails, which declines credentials</button>
+  <br>
+  <button onclick="simpleCredentialsWildcard()">Click to do simple request with credentails to the server with wildcard cors GET</button>
+  <br>
+  <button onclick="simpleCredentials()">Click to do simple request with credentails to the server, which accepts credentials</button>
   <br>
   <span style="color: red;font-weight: bold" id="error"></span>
   <br>
