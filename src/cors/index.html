@@ -132,6 +132,18 @@
     );
   }
 
+  function preflightCachedJsonPost() {
+    myFetch("preflight-cached",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      'JSON POST. "Content-Type": "application/json". Preflight has been cached'
+    );
+  }
+
   function simpleCredentialsIncluded() {
     myFetch("simple",
       {
@@ -167,7 +179,7 @@
           "Cookie": "myCookieKey=myCookieValue"
         }
       },
-      'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".'
+      'Simple GET with credentials: "include". The resource server specified ONLY ONE origin instead of wildcard *.'
     );
   }
 
@@ -212,24 +224,26 @@
   <button onclick="wildcardSimplePost()">Click to do simple POST to the server with wildcard cors POST</button>
   <br>
   <h2>JSON POST</h2>
-  <button onclick="jsonPost()">Click to do POST with Content-Type: application/json</button>
+  <button onclick="jsonPost()">Click to do JSON POST</button>
   <br>
-  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json to the server with wildcard
+  <button onclick="wildcardJsonPost()">Click to do JSON POST to the server with wildcard
     cors POST</button>
   <br>
-  <h3>Preflight Fails</h3>
+  <h3>Preflight</h3>
+  <h4>Fails</h4>
   Check the server console to see that the actual request will not be sent to the server.
   <br>
-  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json to the server,
+  <button onclick="preflightFailedOriginJsonPost()">Click to do JSON POST to the server,
     which declined the preflight check due to origin</button>
   <br>
-  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json to the server,
+  <button onclick="preflightFailedMethodJsonPost()">Click to do JSON POST to the server,
     which declined the preflight check due to method</button>
   <br>
-  <button onclick="preflightFailedCustomHeaderPost()">Click to do POST with Custom-Header: custom-header to the server,
+  <button onclick="preflightFailedCustomHeaderJsonPost()">Click to do JSON POST and Custom-Header: custom-header to the server,
     which declined the preflight check due to custom header</button>
   <br>
-  <span style="color: blue" id="explanation"></span>
+  <h4>Cached</h4>
+  <button onclick="preflightCachedJsonPost()">Click to do JSON POST, and the result of a prelight requst has been cached</button>
   <br>
   <h2>Credentials</h2>
   <button onclick="simpleCredentialsIncluded()">Click to do simple request with credentails, which declines
@@ -249,6 +263,8 @@
   <span style="color: red;font-weight: bold" id="error"></span>
   <br>
   <span id="response"></span>
+  <br>
+  <span style="color: blue" id="explanation"></span>
 </body>
 
 </html>

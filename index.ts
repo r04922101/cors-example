@@ -31,6 +31,7 @@ function startResourceServer() {
   server.use(corsPath, cors.preflightFailedOriginRouter());
   server.use(corsPath, cors.preflightFailedMethodRouter());
   server.use(corsPath, cors.preflightFailedHeaderRouter());
+  server.use(corsPath, cors.preflightCachedRouter());
 
   server.use(corsPath, cors.simpleRouter());
   server.use(corsPath, cors.wildcardSimpleRouter());
