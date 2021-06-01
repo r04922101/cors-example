@@ -30,6 +30,8 @@ function startResourceServer() {
   // Otherwise, other routers might change the server cors behavior
   server.use(corsPath, cors.preflightFailedOriginRouter());
   server.use(corsPath, cors.preflightFailedMethodRouter());
+  server.use(corsPath, cors.preflightFailedHeaderRouter());
+
   server.use(corsPath, cors.simpleRouter());
   server.use(corsPath, cors.wildcardSimpleRouter());
   server.use(corsPath, cors.credentials());

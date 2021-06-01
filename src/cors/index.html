@@ -113,6 +113,19 @@
     );
   }
 
+  function preflightFailedCustomHeaderJsonPost() {
+    myFetch("preflight-failed-header",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Custom-Header": "custom-header",
+        },
+      },
+      'Custom header POST. "Custom-Header": "custom-header". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"'
+    );
+  }
+
   function simpleCredentialsIncluded() {
     myFetch("simple",
       {
@@ -175,6 +188,8 @@
   <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to origin</button>
   <br>
   <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json to the server, which declined the preflight check due to method</button>
+  <br>
+  <button onclick="preflightFailedCustomHeaderPost()">Click to do POST with Custom-Header: custom-header to the server, which declined the preflight check due to custom header</button>
   <br>
   <span style="color: blue" id="explanation"></span>
   <br>

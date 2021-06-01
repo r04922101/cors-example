@@ -43,6 +43,9 @@ export function preflightFailedOriginRouter(): Router {
   const endpoint = '/preflight-failed-origin';
   router.options(endpoint, function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Method', 'POST');
+
     return res.sendStatus(400);
   });
   router.post(endpoint, function(req, res) {
@@ -58,6 +61,21 @@ export function preflightFailedMethodRouter(): Router {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Method', 'GET');
+    return res.sendStatus(400);
+  });
+  router.post(endpoint, function(req, res) {
+    res.send('You will never get response because preflight check failed.');
+  });
+  return router;
+}
+
+export function preflightFailedHeaderRouter(): Router {
+  const router = Router();
+  const endpoint = '/preflight-failed-header';
+  router.options(endpoint, function(req, res) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Method', 'POST');
     return res.sendStatus(400);
   });
   router.post(endpoint, function(req, res) {
