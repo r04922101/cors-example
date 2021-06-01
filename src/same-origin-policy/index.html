@@ -10,30 +10,30 @@
 <script>
   function explain(text) {
     document.getElementById("blank").style.visibility = "visible";
-    document.getElementById("explanation").innerHTML = text;
+    document.getElementById("explanation").innerHTML += text;
   }
 
   function handleError(error) {
-    document.getElementById("error").innerHTML = Error(error).message;
+    document.getElementById("error").innerHTML += Error(error).message;
   }
 
-  function myFetch(url, options, explanation) {
+  function myFetch(path, options, explanation) {
     document.getElementById("blank").style.visibility = "hidden";
-    document.getElementById("explanation").innerHTML = "";
-    document.getElementById("error").innerHTML = "";
+    document.getElementById("explanation").innerHTML = "Explanation: ";
+    document.getElementById("error").innerHTML = "Error: ";
     explain(explanation);
-    fetch(url, options).catch(handleError);
+    fetch("http://localhost:3001/" + path, options).catch(handleError);
   }
 
   function simpleGet() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {},
       "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
     )
   }
 
   function noCorsGet() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {
         mode: "no-cors"
       },
@@ -42,7 +42,7 @@
   }
 
   function simplePost() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {
         method: "POST"
       },
@@ -51,19 +51,19 @@
   }
 
   function jsonPost() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         }
       },
-      'NOT a simple POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
+      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
     );
   }
 
   function noCorsFormPost() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {
         method: "POST",
         mode: "no-cors",
@@ -76,19 +76,19 @@
   }
 
   function noCorsJsonPost() {
-    myFetch("http://localhost:3001/same-origin-policy", {
+    myFetch("same-origin-policy", {
       method: "POST",
       mode: "no-cors",
       headers: {
         "Content-Type": "application/json"
       }
     },
-      'NOT a simple POST. no-cors stripped the header "Content-Type": "application/json".'
+      'JSON POST. no-cors stripped the header "Content-Type": "application/json".'
     );
   }
 
   function noCorsJsonStrippedPost() {
-    myFetch("http://localhost:3001/same-origin-policy",
+    myFetch("same-origin-policy",
       {
         method: "POST",
         mode: "no-cors",
@@ -97,7 +97,7 @@
           "Custom-Header": "I will be stripped"
         }
       },
-      'NOT a simple POST. no-cors stripped the header "Content-Type": "application/json" and custom header.'
+      'JSON POST with extra custom header. no-cors stripped the header "Content-Type": "application/json" and custom header.'
     );
   }
 </script>

@@ -9,43 +9,108 @@
 </head>
 <script>
   function explain(text) {
-    document.getElementById("explanation").innerHTML = text;
+    document.getElementById("explanation").innerHTML += text;
   }
 
   function handleError(error) {
-    document.getElementById("blank-error").style.visibility = "visible";
-    document.getElementById("error").innerHTML = Error(error).message;
+    document.getElementById("error").innerHTML += Error(error).message;
   }
 
-  function myFetch(url, options, explanation) {
-    document.getElementById("explanation").innerHTML = "";
-    document.getElementById("blank-error").style.visibility = "hidden";
-    document.getElementById("error").innerHTML = "";
-    document.getElementById("blank-response").style.visibility = "hidden";
+  function myFetch(path, options, explanation) {
+    document.getElementById("explanation").innerHTML = "Explanation: ";
+    document.getElementById("error").innerHTML = "Error: ";
+    document.getElementById("response").innerHTML = "Response: ";
     explain(explanation);
 
-    fetch(url, options)
+    fetch("http://localhost:3001/cors/" + path, options)
       .then(resp => resp.text())
       .then(text => {
-        document.getElementById("blank-response").style.visibility = "visible";
-        document.getElementById("response").innerHTML = `Response : ${text}`;
+        if(text) {
+          document.getElementById("response").innerHTML = `Response : ${text}`;
+        }
       })
       .catch(handleError);
   }
 
   function simpleGet() {
-    myFetch("http://localhost:3001/cors/simple",
+    myFetch("simple",
       {},
       "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
     )
   }
 
   function wildcardSimpleGet() {
-    myFetch("http://localhost:3001/cors/wildcard",
+    myFetch("wildcard",
       {}
       ,
       "Simple GET. Check the response header, Access-Control-Allow-Origin: *"
     )
+  }
+
+  function simplePost() {
+    myFetch("simple",
+      {
+        method: "POST"
+      },
+      "Simple POST. Browser blocked the repsonse and throw error by same-origin policy."
+    );
+  }
+
+  function wildcardSimplePost() {
+    myFetch("wildcard",
+      {
+        method: "POST"
+      },
+      "Simple POST. Check the response header, Access-Control-Allow-Origin: *"
+    );
+  }
+
+  function jsonPost() {
+    myFetch("simple",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      },
+      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
+    );
+  }
+
+  function wildcardJsonPost() {
+    myFetch("wildcard",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      },
+      'JSON POST. "Content-Type": "application/json". Check the response header, Access-Control-Allow-Origin: *'
+    );
+  }
+
+  function preflightFailedOriginJsonPost() {
+    myFetch("preflight-failed-origin",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Origin" header has a value "http://localhost:3001"'
+    );
+  }
+
+  function preflightFailedMethodJsonPost() {
+    myFetch("preflight-failed-method",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"'
+    );
   }
 </script>
 
@@ -56,10 +121,26 @@
   <br>
   <button onclick="wildcardSimpleGet()">Click to do simple GET with server wildcard cors GET</button>
   <br>
+  <button onclick="simplePost()">Click to do simple POST</button>
+  <br>
+  <button onclick="wildcardSimplePost()">Click to do simple POST with server wildcard cors POST</button>
+  <br>
+  <h2>JSON POST</h2>
+  <button onclick="jsonPost()">Click to do POST with Content-Type: application/json</button>
+  <br>
+  <button onclick="wildcardJsonPost()">Click to do POST with Content-Type: application/json with server wildcard cors POST</button>
+  <br>
+  <h3>Preflight Fails</h3>
+  Check the server console to see that the actual request will not be sent to the server.
+  <br>
+  <button onclick="preflightFailedOriginJsonPost()">Click to do POST with Content-Type: application/json with server declined the preflight check due to origin</button>
+  <br>
+  <button onclick="preflightFailedMethodJsonPost()">Click to do POST with Content-Type: application/json with server declined the preflight check due to method</button>
+  <br>
   <span style="color: blue" id="explanation"></span>
-  <br style="visibility: hidden" id="blank-error">
+  <br>
   <span style="color: red;font-weight: bold" id="error"></span>
-  <br style="visibility: hidden" id="blank-response">
+  <br>
   <span id="response"></span>
 </body>
 
