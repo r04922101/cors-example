@@ -66,3 +66,5 @@ Use **CORS** to allow cross-origin access.
 ## References
 
 1. [MDN Web Docs Same-Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)
+
+## [HackMD](https://hackmd.io/@r04922101/SylRxuclu)
