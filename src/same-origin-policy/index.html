@@ -9,95 +9,99 @@
 </head>
 <script>
   function explain(text) {
-    document.getElementById("blank").style.visibility = "visible";
-    document.getElementById("explanation").innerHTML += text;
+    document.getElementById('blank').style.visibility = 'visible';
+    document.getElementById('explanation').innerHTML += text;
   }
 
   function handleError(error) {
-    document.getElementById("error").innerHTML += Error(error).message;
+    document.getElementById('error').innerHTML += Error(error).message;
   }
 
   function myFetch(path, options, explanation) {
-    document.getElementById("blank").style.visibility = "hidden";
-    document.getElementById("explanation").innerHTML = "Explanation: ";
-    document.getElementById("error").innerHTML = "Error: ";
+    document.getElementById('blank').style.visibility = 'hidden';
+    document.getElementById('explanation').innerHTML = 'Explanation: ';
+    document.getElementById('error').innerHTML = 'Error: ';
     explain(explanation);
-    fetch("http://localhost:3001/" + path, options).catch(handleError);
+    fetch('http://localhost:3001/' + path, options).catch(handleError);
   }
 
   function simpleGet() {
-    myFetch("same-origin-policy",
-      {},
-      "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
-    )
+    myFetch('same-origin-policy', {}, 'Simple GET. Browser blocked the repsonse and throw error by same-origin policy.');
   }
 
   function noCorsGet() {
-    myFetch("same-origin-policy",
+    myFetch(
+      'same-origin-policy',
       {
-        mode: "no-cors"
+        mode: 'no-cors',
       },
-      "Simple GET. no-cors mode mitigates the error."
-    )
+      'Simple GET. no-cors mode mitigates the error.',
+    );
   }
 
   function simplePost() {
-    myFetch("same-origin-policy",
+    myFetch(
+      'same-origin-policy',
       {
-        method: "POST"
+        method: 'POST',
       },
-      "Simple POST. Browser blocked the repsonse and throw error by same-origin policy."
+      'Simple POST. Browser blocked the repsonse and throw error by same-origin policy.',
     );
   }
 
   function jsonPost() {
-    myFetch("same-origin-policy",
+    myFetch(
+      'same-origin-policy',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       },
-      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
+      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.',
     );
   }
 
   function noCorsFormPost() {
-    myFetch("same-origin-policy",
+    myFetch(
+      'same-origin-policy',
       {
-        method: "POST",
-        mode: "no-cors",
+        method: 'POST',
+        mode: 'no-cors',
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       },
-      'Simple POST with "Content-Type": "application/x-www-form-urlencoded". no-cors mode mitigates the error.'
+      'Simple POST with "Content-Type": "application/x-www-form-urlencoded". no-cors mode mitigates the error.',
     );
   }
 
   function noCorsJsonPost() {
-    myFetch("same-origin-policy", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    },
-      'JSON POST. no-cors stripped the header "Content-Type": "application/json".'
+    myFetch(
+      'same-origin-policy',
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+      'JSON POST. no-cors stripped the header "Content-Type": "application/json".',
     );
   }
 
   function noCorsJsonStrippedPost() {
-    myFetch("same-origin-policy",
+    myFetch(
+      'same-origin-policy',
       {
-        method: "POST",
-        mode: "no-cors",
+        method: 'POST',
+        mode: 'no-cors',
         headers: {
-          "Content-Type": "application/json",
-          "Custom-Header": "I will be stripped"
-        }
+          'Content-Type': 'application/json',
+          'Custom-Header': 'I will be stripped',
+        },
       },
-      'JSON POST with extra custom header. no-cors stripped the header "Content-Type": "application/json" and custom header.'
+      'JSON POST with extra custom header. no-cors stripped the header "Content-Type": "application/json" and custom header.',
     );
   }
 </script>

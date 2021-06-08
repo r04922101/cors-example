@@ -9,29 +9,29 @@
 </head>
 <script>
   function explain(text) {
-    document.getElementById("explanation").innerHTML += text;
+    document.getElementById('explanation').innerHTML += text;
   }
 
   function handleError(error) {
-    document.getElementById("error").innerHTML += Error(error).message;
+    document.getElementById('error').innerHTML += Error(error).message;
   }
 
   function myFetch(path, options, explanation, showHeader = '') {
-    document.getElementById("explanation").innerHTML = "Explanation: ";
-    document.getElementById("error").innerHTML = "Error: ";
-    document.getElementById("response").innerHTML = "Response: ";
+    document.getElementById('explanation').innerHTML = 'Explanation: ';
+    document.getElementById('error').innerHTML = 'Error: ';
+    document.getElementById('response').innerHTML = 'Response: ';
     explain(explanation);
 
-    return fetch("http://localhost:3001/cors/" + path, options)
+    return fetch('http://localhost:3001/cors/' + path, options)
       .then(resp => {
-        if(showHeader) {
+        if (showHeader) {
           alert(resp.headers.get(showHeader));
         }
         return resp.text();
       })
       .then(text => {
         if (text) {
-          document.getElementById("response").innerHTML = `Response : ${text}`;
+          document.getElementById('response').innerHTML = `Response : ${text}`;
         }
         return text;
       })
@@ -39,175 +39,181 @@
   }
 
   function simpleGet() {
-    myFetch("simple",
-      {},
-      "Simple GET. Browser blocked the repsonse and throw error by same-origin policy."
-    )
+    myFetch('simple', {}, 'Simple GET. Browser blocked the repsonse and throw error by same-origin policy.');
   }
 
   function wildcardSimpleGet() {
-    myFetch("wildcard",
-      {}
-      ,
-      "Simple GET. Check the response header, Access-Control-Allow-Origin: *"
-    )
+    myFetch('wildcard', {}, 'Simple GET. Check the response header, Access-Control-Allow-Origin: *');
   }
 
   function simplePost() {
-    myFetch("simple",
+    myFetch(
+      'simple',
       {
-        method: "POST"
+        method: 'POST',
       },
-      "Simple POST. Browser blocked the repsonse and throw error by same-origin policy."
+      'Simple POST. Browser blocked the repsonse and throw error by same-origin policy.',
     );
   }
 
   function wildcardSimplePost() {
-    myFetch("wildcard",
+    myFetch(
+      'wildcard',
       {
-        method: "POST"
+        method: 'POST',
       },
-      "Simple POST. Check the response header, Access-Control-Allow-Origin: *"
+      'Simple POST. Check the response header, Access-Control-Allow-Origin: *',
     );
   }
 
   function jsonPost() {
-    myFetch("simple",
+    myFetch(
+      'simple',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       },
-      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.'
+      'JSON POST. "Content-Type": "application/json". Need preflight check, and browser blocked the repsonse and throw error by same-origin policy.',
     );
   }
 
   function wildcardJsonPost() {
-    myFetch("wildcard",
+    myFetch(
+      'wildcard',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       },
-      'JSON POST. "Content-Type": "application/json". Check the response header, Access-Control-Allow-Origin: *'
+      'JSON POST. "Content-Type": "application/json". Check the response header, Access-Control-Allow-Origin: *',
     );
   }
 
   function preflightFailedOriginJsonPost() {
-    myFetch("preflight-failed-origin",
+    myFetch(
+      'preflight-failed-origin',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       },
-      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Origin" header has a value "http://localhost:3001"'
+      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Origin" header has a value "http://localhost:3001"',
     );
   }
 
   function preflightFailedMethodJsonPost() {
-    myFetch("preflight-failed-method",
+    myFetch(
+      'preflight-failed-method',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       },
-      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"'
+      'JSON POST. "Content-Type": "application/json". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"',
     );
   }
 
   function preflightFailedCustomHeaderJsonPost() {
-    myFetch("preflight-failed-header",
+    myFetch(
+      'preflight-failed-header',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Custom-Header": "custom-header",
+          'Content-Type': 'application/json',
+          'Custom-Header': 'custom-header',
         },
       },
-      'Custom header POST. "Custom-Header": "custom-header". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"'
+      'Custom header POST. "Custom-Header": "custom-header". Preflight check failed due to the "Access-Control-Allow-Method" header only has a value "GET"',
     );
   }
 
   function preflightCachedJsonPost() {
-    myFetch("preflight-cached",
+    myFetch(
+      'preflight-cached',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       },
-      'JSON POST. "Content-Type": "application/json". Preflight has been cached'
+      'JSON POST. "Content-Type": "application/json". Preflight has been cached',
     );
   }
 
   function simpleCredentialsIncluded() {
-    myFetch("simple",
+    myFetch(
+      'simple',
       {
-        method: "GET",
-        credentials: "include",
+        method: 'GET',
+        credentials: 'include',
         headers: {
-          "Cookie": "myCookieKey=myCookieValue"
-        }
+          Cookie: 'myCookieKey=myCookieValue',
+        },
       },
-      'Simple GET with credentials: "include". The browser will REJECT any response and the response would be ignored and NOT made available to web content.'
+      'Simple GET with credentials: "include". The browser will REJECT any response and the response would be ignored and NOT made available to web content.',
     );
   }
 
   function simpleCredentialsWildcard() {
-    myFetch("wildcard",
+    myFetch(
+      'wildcard',
       {
-        method: "GET",
-        credentials: "include",
+        method: 'GET',
+        credentials: 'include',
         headers: {
-          "Cookie": "myCookieKey=myCookieValue"
-        }
+          Cookie: 'myCookieKey=myCookieValue',
+        },
       },
-      'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".'
+      'Simple GET with credentials: "include". The value of the "Access-Control-Allow-Origin" header in the response must not be the wildcard "*" when the request\'s credentials mode is "include".',
     );
   }
 
   function simpleCredentials() {
-    myFetch("credentials",
+    myFetch(
+      'credentials',
       {
-        method: "GET",
-        credentials: "include",
+        method: 'GET',
+        credentials: 'include',
         headers: {
-          "Cookie": "myCookieKey=myCookieValue"
-        }
+          Cookie: 'myCookieKey=myCookieValue',
+        },
       },
-      'Simple GET with credentials: "include". The resource server specified ONLY ONE origin instead of wildcard *.'
+      'Simple GET with credentials: "include". The resource server specified ONLY ONE origin instead of wildcard *.',
     );
   }
 
   function notExposeHeaders() {
-    myFetch("expose-headers",
+    myFetch(
+      'expose-headers',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Expose": false
-        }
+          'Content-Type': 'application/json',
+          Expose: false,
+        },
       },
       'JSON POST, but the server did NOT expose response header.',
-      'response-header'
+      'response-header',
     );
   }
 
   function exposeHeaders() {
-    myFetch("expose-headers",
+    myFetch(
+      'expose-headers',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Expose": true
-        }
+          'Content-Type': 'application/json',
+          Expose: true,
+        },
       },
       'JSON POST, and the server DID expose response header.',
-      'response-header'
+      'response-header',
     );
   }
 </script>
@@ -239,11 +245,13 @@
   <button onclick="preflightFailedMethodJsonPost()">Click to do JSON POST to the server,
     which declined the preflight check due to method</button>
   <br>
-  <button onclick="preflightFailedCustomHeaderJsonPost()">Click to do JSON POST and Custom-Header: custom-header to the server,
+  <button onclick="preflightFailedCustomHeaderJsonPost()">Click to do JSON POST and Custom-Header: custom-header to the
+    server,
     which declined the preflight check due to custom header</button>
   <br>
   <h4>Cached</h4>
-  <button onclick="preflightCachedJsonPost()">Click to do JSON POST, and the result of a prelight requst has been cached</button>
+  <button onclick="preflightCachedJsonPost()">Click to do JSON POST, and the result of a prelight requst has been
+    cached</button>
   <br>
   <h2>Credentials</h2>
   <button onclick="simpleCredentialsIncluded()">Click to do simple request with credentails, which declines

@@ -4,10 +4,8 @@
   "description": "Study notes and example code about CORS",
   "main": "index.js",
   "scripts": {
-    "build": "tsc .",
     "dev": "ts-node index.ts",
-    "lint": "eslint .",
-    "main": "node ./build/index.js"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
