@@ -14,7 +14,10 @@
   "keywords": [
     "cors"
   ],
-  "author": "Tony Huang",
+  "author": {
+    "name": "Tony Huang",
+    "email": "r04922101@ntu.edu.tw"
+  },
   "bugs": {
     "url": "https://github.com/r04922101/cors-example/issues"
   },
